@@ -1,0 +1,96 @@
+<?php 
+include 'db.php';
+session_start();
+?>
+<?php 
+
+if(isset($_POST['submit'])){
+    $full_name = mysqli_real_escape_string($conn,$_POST['full_name']);
+    $car_name  = mysqli_real_escape_string($conn,$_POST['car_name']);
+    $car_model = mysqli_real_escape_string($conn,$_POST['car_model']);
+    $car_color = mysqli_real_escape_string($conn,$_POST['car_color']);
+    $car_price = mysqli_real_escape_string($conn,$_POST['car_price']);
+    $sell_date = mysqli_real_escape_string($conn,$_POST['sell_date']);
+
+    $query = "insert into car_tbl (full_name,car_name,car_model,car_color,car_price,sell_date) 
+    values('$full_name','$car_name','$car_model','$car_color','$car_price','$sell_date')";
+
+   $run = mysqli_query($conn, $query);
+    if($run){
+       $success ="<span style='color:green'>Thanks for Submitted</span>";
+    }else{
+       $error = "<span style='color:red'>Sorry.Not Submitted.Try again!</span>";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Company</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center card-header bg-info mt-3">Car Sell Info Database</h1>
+        <div class="card mt-3"> <!--Card Start-->
+            <div class="card-header text-muted text-center ">  
+                <span style="float:right"> 
+                    <button onclick="window.print()" id="print-btn" class="btn btn-info">Print</button>
+                </span>  
+                <h3> <span> <?php echo @$_GET['update_success']; echo @$_GET['update_error']; ?> </span></h3>
+            </div> 
+
+            <div class="card-body"> <!--body Start-->
+                <form action="" method="POST" >
+                        <div class="form-group">               
+                            <label>Name</label>
+                            <input type="text" name="full_name" placeholder="Enter your name" class="form-control" maxlength="50" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Car Name</label>
+                            <input type="text" name = "car_name" placeholder="Enter car name" class="form-control" maxlength="15" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Car Model</label>
+                            <input type="text" name = "car_model" placeholder="Enter car model" class="form-control" maxlength="15" required >
+                        </div>
+
+                        <div class="form-group">
+                            <label>Choose Color</label>
+                            <select class="form-control" name="car_color" required>
+                            <option value="" disabled selected>Choose option</option>
+                                <option value="White">White</option>
+                                <option value="Blue">Blue</option>
+                                <option value="Black">Black</option>
+                                <option value="Red">Red</option>
+                                <option value="Green">Green</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Car Price</label>
+                            <input type="text" name ="car_price" placeholder="Car Price" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Sell Date</label>
+                            <input type="date" name ="sell_date" class="form-control" required>
+                        </div>
+
+                        <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                        <button type="reset" name="reset" class="btn btn-warning" >Reset</button>
+                        <span style="font-size:130%;float:center">  <?php echo @$success; echo @$error; ?> </span>
+                </form>
+            </div> <!--body End-->
+
+        </div><!--Card code end-->
+    </div> 
+</body>
+</html>
